@@ -13,6 +13,7 @@ const SignupForm = () => {
     username: "",
     email: "",
     password: "",
+    city:"",
     country: "",
     state: "",
     pincode: "",
@@ -186,10 +187,10 @@ const SignupForm = () => {
           />
         </div>
 
-        {/* Address */}
+        {/* Password */}
         <div className="col-span-1 md:col-span-2">
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Address <span className="text-red-500">*</span>
+            Password <span className="text-red-500">*</span>
           </label>
           <input
             type="password"
@@ -197,6 +198,20 @@ const SignupForm = () => {
             className="w-full border border-gray-300 px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="password"
             value={formData.password}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        {/*city*/}
+          <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            City<span className="text-red-500">*</span>
+          </label>
+          <input
+            type="text"
+            name="city"
+            className="w-full border border-gray-300 px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
+            value={formData.city}
             onChange={handleChange}
             required
           />
