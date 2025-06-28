@@ -10,10 +10,13 @@ const adminRoutes = require('./Routes/adminRoutes')
 require('dotenv').config();
 
 const app = express();
-const port = 3000;
+const port = 5000;
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:5173', // Frontend port
+  credentials: true
+}));
 app.use(express.json());
 
 // MongoDB Connection

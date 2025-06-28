@@ -26,54 +26,49 @@ const SignupForm = () => {
     }));
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-    
-  //   try {
-  //     const response = await fetch("http://localhost:3000/api/signup", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify(formData),
-  //     });
-      
-  //     if (response.ok) {
-  //       alert("Signup Successful!");
-       
-  //       dispatch({ type: "SIGNUP", payload: formData });
-        
-  //       setFormData({
-  //         firstName: "",
-  //         lastName: "",
-  //         username: "",
-  //         email: "",
-  //         address: "",
-  //         country: "",
-  //         state: "",
-  //         city: "",
-  //         pincode: "",
-  //       });
-  //     } else {
-  //       alert("Signup Failed");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //     alert("Server Error");
-  //   }
-  // };
 
   
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-    try {
-      await axios.post("http://localhost:5000/api/auth/register", formData);
-      navigate("/Signin");
-    } catch (err) {
-      setError("Registration failed");
+  e.preventDefault();
+  setError("");
+
+  try {
+    const response = await axios.post("http://localhost:5000/api/auth/register", formData);
+    console.log("✅ FormData sent to backend:", formData);
+    console.log("✅ Backend response:", response);
+
+    // ✅ Clear form
+    setFormData({
+      firstName: "",
+      lastName: "",
+      username: "",
+      email: "",
+      password: "",
+      city: "",
+      country: "",
+      state: "",
+      pincode: "",
+    });
+
+    // ✅ Navigate only if status is 201 (created)
+    if (response.status === 201) {
+      alert("Signup successful! go to Signin...");
+       
+    } else {
+      setError("Unexpected response from server.");
     }
-  };
+
+  } catch (err) {
+    console.error("❌ Error details:", err.response?.data || err.message);
+
+    if (err.response?.status === 400 && err.response.data === "User already exists") {
+      setError("This email is already registered. Try signing in.");
+    } else {
+      setError("Registration failed. Please try again.");
+    }
+  }
+};
+
 
   const indianStates = [
     "Andhra Pradesh",
@@ -290,6 +285,11 @@ const SignupForm = () => {
       >
         Sign Up
       </button>
+      {error && (
+  <div className="text-red-600 font-medium mt-2">
+    {error}
+  </div>
+)}
     </form>
   );
 };
